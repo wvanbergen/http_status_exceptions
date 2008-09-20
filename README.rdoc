@@ -1,0 +1,40 @@
+= HTTP status exception
+
+This simple plugin will register exception classes for all HTTP status. These exceptions can then be raised from your controllers, after
+which a response will be send back to the client with the desired HTTP status, possible with some other content.
+
+You can use this plugin to access control mechanisms. You can simply raise a HTTPStatus::Forbidden if a user is not allowed to
+perform a certain action. A nice looking error page will be the result. See the example below 
+
+== Installation
+
+Installation is simple. Simply add the gem in your <tt>environment.rb</tt>:
+  
+  Rails::Initializer.run do |config|
+    ...
+    config.gem 'wvanbergen-http_status_exceptions', :lib => 'http_status_exceptions', :source => 'http://gems.github.com'
+  end
+
+Run <tt>rake gems:install</tt> to install the gem if needed.
+
+== Usage
+
+  class BlogController < ApplicationController
+    
+    def destroy
+      raise HTTPStatus::Forbidden, 'You cannot delete blogs!' unless current_user.can_delete_blogs?
+      @blog.destroy
+    end
+  end
+
+By default, this will return an empty response with the "forbidden" status code (403). If you want to add content
+to the response as well, create the following view: <tt>shared/http_status/forbidden.html.erb</tt>. You can use the
+<tt>@exception</tt>-object in your view:
+
+  <h1>Forbidden</h1>
+  <p> <%= h(@exception.message) %> </p>
+  <hr />
+  <p>HTTP status code <small> <%= @exception.status_code %>: <%= @exception.status.to_s.humanize %></small></p>
+
+The response will only be sent if the request format is HTML because of the name of the view file. In theory you 
+could make a response for XML requests as well by using <tt>shared/http_status/forbidden.xml.builder</tt> as filename
