@@ -3,8 +3,8 @@ Gem::Specification.new do |s|
   s.version = '0.1.0'
   s.date    = '2008-09-20'
   
-  s.summary = "A Rails plugin to use exception to generate HTTP status responses"
-  s.description = "Scoped search makes it easy to search your ActiveRecord-based models. It will create a named scope according to a provided query string. The named_scope can be used like any other named_scope, so it can be cchained or combined with will_paginate."
+  s.summary = "A Rails plugin to use exceptions for generating HTTP status responses"
+  s.description = "Clean up your controller code by raising exceptions that generate responses with different HTTP status codes."
   
   s.authors  = ['Willem van Bergen']
   s.email    = ['willem@vanbergen.org']
