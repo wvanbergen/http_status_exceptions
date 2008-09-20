@@ -16,7 +16,7 @@ module HTTPStatus
     end
     
     def template
-      "#{@@template_path}/#{@status_code}"
+      "#{@@template_path}/#{@status}"
     end
   end
   
