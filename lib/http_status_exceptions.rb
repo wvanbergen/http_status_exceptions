@@ -9,8 +9,8 @@ module HTTPStatus
     attr_reader :status, :details
     
     # Creates the exception with a message and some optional other info.
-    def initialize(message, details = nil)
-      @status = self.class.to_s.split("::").last.underscore.to_sym
+    def initialize(message = nil, details = nil)
+      @status = self.class.to_s.split("::").last.underscore.to_sym rescue :internal_server_error
       @details = details
       super(message)
     end
