@@ -1,6 +1,6 @@
 module HTTPStatus
   
-  class Base < Exception
+  class Base < StandardError
 
     # The path from which the error documents are loaded.
     cattr_accessor :template_path
@@ -30,7 +30,7 @@ module HTTPStatus
   # registers the exception handler using the rescue_from method.
   def self.included(base)
     ActionController::StatusCodes::STATUS_CODES.each do |code, name|
-      const_set("#{name.to_s.gsub(/[^A-z]/, '').camelize}", Class.new(HTTPStatus::Base))
+      const_set(name.to_s.gsub(/[^A-Za-z]/, '').camelize, Class.new(HTTPStatus::Base))
     end
     
     base.send(:rescue_from, HTTPStatus::Base, :with => :http_status_exception)
