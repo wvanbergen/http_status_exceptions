@@ -10,5 +10,5 @@ Gem::Specification.new do |s|
   s.email    = ['willem@vanbergen.org']
   s.homepage = 'http://github.com/wvanbergen/http_status_exceptions/wikis'
   
-  s.files = %w(MIT-LICENSE README.rdoc init.rb lib lib/http_status_exceptions.rb)
+  s.files = %w(MIT-LICENSE README.rdoc Rakefile init.rb lib lib/http_status_exceptions.rb tasks tasks/github-gem.rake)
 end
