@@ -19,6 +19,24 @@ Installation is simple. Simply add the gem in your <tt>environment.rb</tt>:
 
 Run <tt>rake gems:install</tt> to install the gem if needed.
 
+== Configuration
+
+You can modify where HTTP status exception looks for its template files like so:
+  
+  class ApplicationController < ActionController::Base
+    ...
+    HTTPStatus::Base.template_path = 'path_to/http_status_templates'
+  end
+  
+You can also modify which layout is used when rendering a template by setting the <tt>template_layout</tt>:
+
+  class ApplicationController < ActionController::Base
+    ...
+    HTTPStatus::Base.template_layout = 'exception'
+  end
+
+If you don't set a template_layout the current layout for the requested action will be used.
+
 == Usage
 
   class BlogController < ApplicationController
