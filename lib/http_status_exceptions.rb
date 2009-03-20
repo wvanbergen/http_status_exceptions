@@ -1,18 +1,15 @@
 module HTTPStatus
-
-  # The HTTPStatus::Base class is used as the base exception class for every status exception.
-  # This base class itself is a subclass of StandardError.
+  
   class Base < StandardError
 
     # The path from which the error documents are loaded.
     cattr_accessor :template_path
     @@template_path = 'shared/http_status'
 
-    # The status (as symbol)
-    attr_reader :status
-    
-    # Any information that is given to the constructor as second argument
-    attr_reader :details
+    # The layout in which the error documents are rendered
+    cattr_accessor :template_layout
+
+    attr_reader :status, :details
     
     # Creates the exception with a message and some optional other info.
     def initialize(message = nil, details = nil)
@@ -32,7 +29,7 @@ module HTTPStatus
     end
   end
 
-  # Creates all the exception classes based on Rails's list of available status codes and
+  # Creates all the exception classes based on Rails's list of available status code and
   # registers the exception handler using the rescue_from method.
   def self.included(base)
     ActionController::StatusCodes::STATUS_CODES.each do |code, name|
@@ -47,7 +44,9 @@ module HTTPStatus
   # with the HTTP status correspodning to the exception.
   def http_status_exception(exception)
     @exception = exception
-    render(:template => exception.template, :status => exception.status)
+    render_options = {:template => exception.template, :status => exception.status}
+    render_options[:layout] = exception.template_layout if exception.template_layout
+    render(render_options)
   rescue ActionView::MissingTemplate
     head(exception.status)
   end
