@@ -11,12 +11,22 @@ describe 'HTTPStatus#http_status_exception' do
   end
   
   ['NotFound', 'Forbidden', 'PaymentRequired'].each do |status_class|
+    status_symbol = status_class.underscore.downcase.to_sym
+    
     it "should create the HTTPStatus::#{status_class} class" do
       HTTPStatus.const_defined?(status_class).should be_true
     end
     
     it "should create a subclass of HTTPStatus::Base for the #{status_class.underscore.humanize.downcase} status" do
       HTTPStatus.const_get(status_class).ancestors.should include(HTTPStatus::Base)
+    end
+    
+    it "should call render with the correct #{status_class.underscore.humanize.downcase} view and correct HTTP status" do
+      @controller.should_receive(:render).with(hash_including(
+            :status => status_symbol, 
+            :template => "shared/http_status/#{status_symbol}"))
+
+      @controller.http_status_exception(HTTPStatus.const_get(status_class).new('test'))
     end
   end
 end
