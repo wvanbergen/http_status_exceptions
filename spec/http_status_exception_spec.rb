@@ -42,9 +42,13 @@ end
       HTTPStatus.const_get(status_class).ancestors.should include(HTTPStatus::Base)
     end
 
-    it "should return the correct status code (#{status_code})" do
+    it "should return the correct status code (#{status_code}) when using the class" do
       HTTPStatus.const_get(status_class).status_code.should == status_code
     end
+    
+    it "should return the correct status code (#{status_code}) when using the instance" do
+      HTTPStatus.const_get(status_class).new.status_code.should == status_code
+    end    
   end
 end
 
@@ -54,6 +58,13 @@ describe 'HTTPStatus#http_status_exception' do
 
   it "should create the :http_status_exception method in ActionController" do
     @controller.should respond_to(:http_status_exception)
+  end
+
+  it "should call :http_status_exception when an exception is raised when handling the action" do
+    exception = HTTPStatus::Base.new('test')
+    @controller.stub!(:perform_action_without_rescue).and_raise(exception)
+    @controller.should_receive(:http_status_exception).with(exception)
+    @controller.send(:perform_action)
   end
 
   it "should call render with the correct view and correct HTTP status" do
@@ -71,6 +82,12 @@ describe 'HTTPStatus#http_status_exception' do
   it "should call render with a layout set when this property is set on the exception class" do
     @controller.should_receive(:render).with(hash_including(:layout => 'testing'))
     HTTPStatus::Base.template_layout = 'testing'
+    @controller.http_status_exception(HTTPStatus::Base.new('test'))
+  end
+  
+  it "should call head with the correct status code if render cannot found a template" do
+    @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.htm.erb'))
+    @controller.should_receive(:head).with(:internal_server_error)
     @controller.http_status_exception(HTTPStatus::Base.new('test'))
   end
 end
