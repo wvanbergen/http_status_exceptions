@@ -13,5 +13,6 @@ Gem::Specification.new do |s|
   s.email    = ['willem@vanbergen.org']
   s.homepage = 'http://github.com/wvanbergen/http_status_exceptions/wikis'
   
-  s.files = %w(spec/spec_helper.rb http_status_exceptions.gemspec .gitignore init.rb lib/http_status_exceptions.rb Rakefile MIT-LICENSE tasks/github-gem.rake README.rdoc spec/http_status_exception_spec.rb)
+  s.files      = %w(spec/spec_helper.rb http_status_exceptions.gemspec .gitignore init.rb lib/http_status_exceptions.rb Rakefile MIT-LICENSE tasks/github-gem.rake README.rdoc spec/http_status_exception_spec.rb)
+  s.test_files = %w(spec/http_status_exception_spec.rb)
 end
