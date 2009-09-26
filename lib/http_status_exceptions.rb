@@ -1,5 +1,5 @@
 module HTTPStatus
-  
+
   # The Base HTTP status exception class is used as superclass for every
   # exception class that is constructed. It implements some shared functionality
   # for finding the status code and determining the template path to render.
@@ -11,24 +11,49 @@ module HTTPStatus
 
     # The layout in which the error documents are rendered
     cattr_accessor :template_layout
+    @@template_path = nil # Use the standard layout template setting by default.
 
-    attr_reader :status, :details
-    
+    attr_reader :details
+
     # Creates the exception with a message and some optional other info.
     def initialize(message = nil, details = nil)
-      @status =  self.class.name.split("::").last.underscore.to_sym rescue :internal_server_error
       @details = details
       super(message)
     end
-    
-    # The numeric status code corresponding to this exception
-    def status_code
-      ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE[@status]
+
+    # Returns the HTTP status symbol (as defined by Rails) corresponding to this class.
+    # This method should be overridden by subclasses
+    def self.status
+      :internal_server_error
     end
-    
-    # The name of the template that should be used as error page for this exception
+
+    # Returns the HTTP status symbol (as defined by Rails) corresponding to this instance.
+    # By default, it calls the class method of the same name.
+    def status
+      self.class.status
+    end
+
+    # The numeric status code corresponding to this exception class.
+    # Uses the status code map provided by Rails.
+    def self.status_code
+      ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE[self.status]
+    end
+
+    # The numeric status code corresponding to this exception.
+    # By default, it calls the class method of the same name.
+    def status_code
+      self.class.status_code
+    end
+
+    # The name of the template that should be used as error page for this exception class.
+    def self.template
+      "#{template_path}/#{status}"
+    end
+
+    # The name of the template that should be used as error page for this exception.
+    # By default, it calls the class method of the same name.
     def template
-      "#{@@template_path}/#{@status}"
+      self.class.template
     end
   end
 
@@ -37,15 +62,19 @@ module HTTPStatus
   def self.included(base)
     base.send(:rescue_from, HTTPStatus::Base, :with => :http_status_exception)
   end
-  
+
   # Generates a HTTPStatus::Base subclass for every subclass that is found
   def self.const_missing(const)
+    status_symbol = const.to_s.underscore.to_sym
+    raise "Unrecognized HTTP Status name!" unless ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.has_key?(status_symbol)
     klass = Class.new(HTTPStatus::Base)
+    klass.cattr_accessor(:status)
+    klass.status = status_symbol
     const_set(const, klass)
     return const_get(const)
   end
 
-  # The default handler for raised HTTP status exceptions. 
+  # The default handler for raised HTTP status exceptions.
   # It will render a template if available, or respond with an empty response
   # with the HTTP status correspodning to the exception.
   def http_status_exception(exception)

@@ -2,25 +2,31 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe HTTPStatus::Base do
   before(:each) do
-    @status_exception_class = Class.new(HTTPStatus::Base)
-    @status_exception_class.stub!(:name).and_return('HTTPStatus::TestingStatus')
-    @status_exception = @status_exception_class.new('Testing the base exception class')
+    ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.stub!(:has_key?).with(:testing_status).and_return(true)
+    @status_exception_class = HTTPStatus::TestingStatus
   end
-  
-  after(:each) { HTTPStatus::Base.template_path = 'shared/http_status' }
 
-  it "should set the status symbol bases on the class name" do
-    @status_exception.status.should == :testing_status
+  after(:each) do
+    HTTPStatus::Base.template_path = 'shared/http_status'
+    HTTPStatus.send :remove_const, 'TestingStatus'
   end
-  
+
+  it "should set the status symbol based on the class name" do
+    @status_exception_class.status.should == :testing_status
+  end
+
   it "should check ActionController's status code list for the status code based on the class name" do
     ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.should_receive(:[]).with(:testing_status)
-    @status_exception.status_code
+    @status_exception_class.status_code
   end
-  
+
   it "should use the HTTPStatus::Base.template_path setting to determine the error template" do
     HTTPStatus::Base.template_path = 'testing'
-    @status_exception.template.should == 'testing/testing_status'
+    @status_exception_class.template.should == 'testing/testing_status'
+  end
+  
+  it "should raise an exception when the class name does not correspond to a HTTP status code" do
+    lambda { HTTPStatus::Nonsense }.should raise_error
   end
 end
 
@@ -37,7 +43,7 @@ end
     end
 
     it "should return the correct status code (#{status_code})" do
-      HTTPStatus.const_get(status_class).new.status_code.should == status_code
+      HTTPStatus.const_get(status_class).status_code.should == status_code
     end
   end
 end
@@ -45,14 +51,14 @@ end
 describe 'HTTPStatus#http_status_exception' do
   before(:each) { @controller = Class.new(ActionController::Base).new }
   after(:each)  { HTTPStatus::Base.template_layout = nil}
-  
+
   it "should create the :http_status_exception method in ActionController" do
     @controller.should respond_to(:http_status_exception)
   end
 
   it "should call render with the correct view and correct HTTP status" do
     @controller.should_receive(:render).with(hash_including(
-          :status => :base, :template => "shared/http_status/base"))
+          :status => :internal_server_error, :template => "shared/http_status/internal_server_error"))
 
     @controller.http_status_exception(HTTPStatus::Base.new('test'))
   end
