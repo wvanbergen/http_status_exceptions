@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name    = 'http_status_exceptions'
-  s.version = "0.1.6"
+  s.version = "0.1.7"
   s.date    = "2009-09-26"
 
   s.summary     = "A Rails plugin to use exceptions for generating HTTP status responses"
