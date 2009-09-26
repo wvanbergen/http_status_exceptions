@@ -1,5 +1,8 @@
 module HTTPStatus
   
+  # The Base HTTP status exception class is used as superclass for every
+  # exception class that is constructed. It implements some shared functionality
+  # for finding the status code and determining the template path to render.
   class Base < StandardError
 
     # The path from which the error documents are loaded.
@@ -13,7 +16,7 @@ module HTTPStatus
     
     # Creates the exception with a message and some optional other info.
     def initialize(message = nil, details = nil)
-      @status = self.class.to_s.split("::").last.underscore.to_sym rescue :internal_server_error
+      @status =  self.class.name.split("::").last.underscore.to_sym rescue :internal_server_error
       @details = details
       super(message)
     end
@@ -52,4 +55,5 @@ module HTTPStatus
   end
 end
 
+# Include the HTTPStatus module into ActionController to enable its functionality
 ActionController::Base.send(:include, HTTPStatus)
