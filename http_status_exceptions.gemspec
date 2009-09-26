@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name    = 'http_status_exceptions'
-  s.version = '0.1.5'
-  s.date    = '2009-03-24'
+  s.version = "0.1.6"
+  s.date    = "2009-09-26"
   
   s.summary     = "A Rails plugin to use exceptions for generating HTTP status responses"
   s.description = "Clean up your controller code by raising exceptions that generate responses with different HTTP status codes."
@@ -13,5 +13,5 @@ Gem::Specification.new do |s|
   s.email    = ['willem@vanbergen.org']
   s.homepage = 'http://github.com/wvanbergen/http_status_exceptions/wikis'
   
-  s.files = %w(MIT-LICENSE README.rdoc Rakefile init.rb lib lib/http_status_exceptions.rb tasks tasks/github-gem.rake)
+  s.files = %w(spec/spec_helper.rb http_status_exceptions.gemspec .gitignore init.rb lib/http_status_exceptions.rb Rakefile MIT-LICENSE tasks/github-gem.rake README.rdoc spec/http_status_exception_spec.rb)
 end
