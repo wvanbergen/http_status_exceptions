@@ -24,7 +24,7 @@ describe HTTPStatus::Base do
     HTTPStatus::Base.template_path = 'testing'
     @status_exception_class.template.should == 'testing/testing_status'
   end
-  
+
   it "should raise an exception when the class name does not correspond to a HTTP status code" do
     lambda { HTTPStatus::Nonsense }.should raise_error
   end
@@ -45,10 +45,10 @@ end
     it "should return the correct status code (#{status_code}) when using the class" do
       HTTPStatus.const_get(status_class).status_code.should == status_code
     end
-    
+
     it "should return the correct status code (#{status_code}) when using the instance" do
       HTTPStatus.const_get(status_class).new.status_code.should == status_code
-    end    
+    end
   end
 end
 
@@ -84,7 +84,7 @@ describe 'HTTPStatus#http_status_exception' do
     HTTPStatus::Base.template_layout = 'testing'
     @controller.http_status_exception(HTTPStatus::Base.new('test'))
   end
-  
+
   it "should call head with the correct status code if render cannot found a template" do
     @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.htm.erb'))
     @controller.should_receive(:head).with(:internal_server_error)

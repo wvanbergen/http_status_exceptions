@@ -40,7 +40,7 @@ If you don't set a template_layout the current layout for the requested action w
 == Usage
 
   class BlogController < ApplicationController
-    
+
     def destroy
       raise HTTPStatus::Forbidden, 'You cannot delete blogs!' unless current_user.can_delete_blogs?
       @blog.destroy
