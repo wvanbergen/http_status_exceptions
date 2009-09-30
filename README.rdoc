@@ -1,3 +1,11 @@
+<b>WARNING:</b> the gem version that Github currently serves is faulty. The issue
+is already fixes in the repository, but Github is not yet building new gem
+versions. As soon as this is fixed, I will release a new version that resolves
+the issue. For now, install version 0.1.5 which is unaffected:
+
+  sudo gem install wvanbergen-http_status_exceptions \
+      --source http://gems.github.com --version "= 0.1.5"
+
 = HTTP status exception
 
 This simple plugin will register exception classes for all HTTP status. These exceptions can then be raised from your controllers, after
