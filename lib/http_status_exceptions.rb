@@ -37,7 +37,7 @@ module HTTPStatus
 
     # The layout in which the error documents are rendered
     cattr_accessor :template_layout
-    @@template_path = nil # Use the standard layout template setting by default.
+    @@template_layout = nil # Use the standard layout template setting by default.
 
     attr_reader :details
 
