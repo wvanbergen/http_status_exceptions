@@ -1,18 +1,22 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe HTTPStatus::Base do
-  before(:each) do
+describe HTTPStatus::Base, 'class inheritance' do
+  before(:all) do
     ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.stub!(:has_key?).with(:testing_status).and_return(true)
     @status_exception_class = HTTPStatus::TestingStatus
   end
 
-  after(:each) do
+  after(:all) do
     HTTPStatus::Base.template_path = 'shared/http_status'
     HTTPStatus.send :remove_const, 'TestingStatus'
   end
 
   it "should set the status symbol based on the class name" do
     @status_exception_class.status.should == :testing_status
+  end
+
+  it "should use 'shared/http_status' as default view path" do
+    @status_exception_class.template.should == 'shared/http_status/testing_status'
   end
 
   it "should check ActionController's status code list for the status code based on the class name" do
@@ -86,7 +90,7 @@ describe 'HTTPStatus#http_status_exception' do
   end
 
   it "should call head with the correct status code if render cannot found a template" do
-    @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.htm.erb'))
+    @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.html.erb'))
     @controller.should_receive(:head).with(:internal_server_error)
     @controller.http_status_exception(HTTPStatus::Base.new('test'))
   end
