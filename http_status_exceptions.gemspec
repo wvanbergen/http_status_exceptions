@@ -3,8 +3,8 @@ Gem::Specification.new do |s|
 
   # Do not update the version and date values by hand.
   # This will be done automatically by the gem release script.
-  s.version = "0.1.9"
-  s.date    = "2009-10-01"
+  s.version = "0.2.0"
+  s.date    = "2009-10-07"
 
   s.summary     = "A Rails plugin to use exceptions for generating HTTP status responses"
   s.description = "Clean up your controller code by raising exceptions that generate responses with different HTTP status codes."
