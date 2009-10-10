@@ -1,10 +1,6 @@
 <b>WARNING:</b> the gem version that Github currently serves is faulty. The issue
-is already fixes in the repository, but Github is not yet building new gem
-versions. As soon as this is fixed, I will release a new version that resolves
-the issue. For now, install version 0.1.5 which is unaffected:
-
-  sudo gem install wvanbergen-http_status_exceptions \
-      --source http://gems.github.com --version "= 0.1.5"
+is already fixed in the repository, but Github will not build new gems anymore. Make
+sure to install the latest version from the gemcutter repository (see below)
 
 = HTTP status exception
 
@@ -18,11 +14,11 @@ See the project wiki (http://github.com/wvanbergen/http_status_exceptions/wikis)
 
 == Installation
 
-Installation is simple. Simply add the gem in your <tt>environment.rb</tt>:
+Installation is simple. Simply add the gem to the configuration in your <tt>environment.rb</tt>:
 
   Rails::Initializer.run do |config|
     ...
-    config.gem 'wvanbergen-http_status_exceptions', :lib => 'http_status_exceptions', :source => 'http://gems.github.com'
+    config.gem 'http_status_exceptions', :source => 'http://gemcutter.org'
   end
 
 Run <tt>rake gems:install</tt> to install the gem if needed.
