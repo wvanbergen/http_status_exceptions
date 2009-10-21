@@ -10,7 +10,7 @@ which a response will be send back to the client with the desired HTTP status, p
 You can use this plugin to access control mechanisms. You can simply raise a HTTPStatus::Forbidden if a user is not allowed to
 perform a certain action. A nice looking error page will be the result. See the example below:
 
-See the project wiki (http://github.com/wvanbergen/http_status_exceptions/wikis) for additional documentation.
+See the project wiki (http://wiki.github.com/wvanbergen/http_status_exceptions) for additional documentation.
 
 == Installation
 
