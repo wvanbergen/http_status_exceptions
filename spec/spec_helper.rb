@@ -1,10 +1,12 @@
 $: << File.join(File.dirname(__FILE__), '..', 'lib')
 
 require 'rubygems'
+require 'bundler'
+
+Bundler.setup
+
 require 'spec/autorun'
-
 require 'action_controller'
-
 require 'http_status_exceptions'
 
 # Include all files in the spec_helper directory

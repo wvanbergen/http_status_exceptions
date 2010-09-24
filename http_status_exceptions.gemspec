@@ -9,7 +9,9 @@ Gem::Specification.new do |s|
   s.summary     = "A Rails plugin to use exceptions for generating HTTP status responses"
   s.description = "Clean up your controller code by raising exceptions that generate responses with different HTTP status codes."
 
-  s.add_runtime_dependency('actionpack', '>= 2.1.0')
+  s.add_runtime_dependency('actionpack', '~> 2')
+
+  s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
 
   s.authors  = ['Willem van Bergen']

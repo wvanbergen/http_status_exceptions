@@ -4,3 +4,4 @@ http_status_exceptions-*.gem
 /pkg
 /coverage
 .DS_Store
+/.bundle
