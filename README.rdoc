@@ -1,7 +1,3 @@
-<b>WARNING:</b> the gem version that Github currently serves is faulty. The issue
-is already fixed in the repository, but Github will not build new gems anymore. Make
-sure to install the latest version from the gemcutter repository (see below)
-
 = HTTP status exception
 
 This simple plugin will register exception classes for all HTTP status. These exceptions can then be raised from your controllers, after
@@ -14,12 +10,16 @@ See the project wiki (http://wiki.github.com/wvanbergen/http_status_exceptions) 
 
 == Installation
 
-Installation is simple. Simply add the gem to the configuration in your <tt>environment.rb</tt>:
+Installation is simple. Simply add the gem to the configuration in your <tt>environment.rb</tt> or <tt>Gemfile</tt>:
 
+  # environment.rb
   Rails::Initializer.run do |config|
     ...
-    config.gem 'http_status_exceptions', :source => 'http://gemcutter.org'
+    config.gem 'http_status_exceptions'
   end
+
+  # Gemfile
+  gem 'http_status_exceptions'
 
 Run <tt>rake gems:install</tt> to install the gem if needed.
 
