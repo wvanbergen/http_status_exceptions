@@ -3,6 +3,7 @@ require 'bundler'
 
 Bundler.setup
 
+require 'rspec'
 require 'http_status_exceptions'
 
 RSpec.configure do |config|

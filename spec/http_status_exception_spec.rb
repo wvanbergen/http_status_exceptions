@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe HTTPStatus::Base, 'class inheritance' do
-  
+
   before do
-    ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.stub(:has_key?).with(:testing_status).and_return(true)
+    Rack::Utils::SYMBOL_TO_STATUS_CODE[:testing_status] = 9000 #.stub(:has_key?).with(:testing_status).and_return(true)
     @status_exception_class = HTTPStatus::TestingStatus
   end
 
@@ -21,7 +21,7 @@ describe HTTPStatus::Base, 'class inheritance' do
   end
 
   it "should check ActionController's status code list for the status code based on the class name" do
-    ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.should_receive(:[]).with(:testing_status)
+    Rack::Utils::SYMBOL_TO_STATUS_CODE.should_receive(:[]).with(:testing_status)
     @status_exception_class.status_code
   end
 
@@ -69,7 +69,7 @@ describe 'HTTPStatus#http_status_exception' do
     exception = HTTPStatus::Base.new('test')
     @controller.stub!(:perform_action_without_rescue).and_raise(exception)
     @controller.should_receive(:http_status_exception).with(exception)
-    @controller.send(:perform_action)
+    # @controller.send(:process, :get)
   end
 
   it "should call render with the correct view and correct HTTP status" do
@@ -91,7 +91,7 @@ describe 'HTTPStatus#http_status_exception' do
   end
 
   it "should call head with the correct status code if render cannot found a template" do
-    @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.html.erb'))
+    @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.html.erb', {}, false))
     @controller.should_receive(:head).with(:internal_server_error)
     @controller.http_status_exception(HTTPStatus::Base.new('test'))
   end
