@@ -12,11 +12,11 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('actionpack', '~> 2')
 
   s.add_development_dependency('rake')
-  s.add_development_dependency('rspec')
+  s.add_development_dependency('rspec', '~> 2')
 
-  s.authors  = ['Willem van Bergen']
-  s.email    = ['willem@vanbergen.org']
-  s.homepage = 'http://github.com/wvanbergen/http_status_exceptions/wikis'
+  s.authors  = ['Willem van Bergen', 'Jaap van der Meer', 'Jeff Pollard']
+  s.email    = 'willem@vanbergen.org'
+  s.homepage = 'http://github.com/wvanbergen/http_status_exceptions/wiki'
 
   # Do not update the files and test_files values by hand.
   # This will be done automatically by the gem release script.

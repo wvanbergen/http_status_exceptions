@@ -1,12 +1,13 @@
 require 'spec_helper'
 
 describe HTTPStatus::Base, 'class inheritance' do
-  before(:all) do
-    ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.stub!(:has_key?).with(:testing_status).and_return(true)
+  
+  before do
+    ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.stub(:has_key?).with(:testing_status).and_return(true)
     @status_exception_class = HTTPStatus::TestingStatus
   end
 
-  after(:all) do
+  after do
     HTTPStatus::Base.template_path = 'shared/http_status'
     HTTPStatus.send :remove_const, 'TestingStatus'
   end

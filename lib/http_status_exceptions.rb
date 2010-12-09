@@ -1,3 +1,5 @@
+require 'action_controller'
+
 # The HTTPStatus module is the core of the http_status_exceptions gem and
 # contains all functionality.
 #
