@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('rack', '>= 1.2.1')
   s.add_runtime_dependency('actionpack', '>= 3')
 
-  s.add_development_dependency('rails', '~> 3')
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '~> 2')
 
