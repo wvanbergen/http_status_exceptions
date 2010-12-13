@@ -67,10 +67,10 @@ describe 'HTTPStatus#http_status_exception' do
 
   it "should call :http_status_exception when an exception is raised when handling the action" do
     exception = HTTPStatus::Base.new('test')
-    @controller.stub(:failure).and_raise(exception)
     @controller.stub(:request).and_return(ActionDispatch::TestRequest.new)
+    @controller.stub(:test).and_raise(exception)
     @controller.should_receive(:http_status_exception).with(exception)
-    @controller.send(:process_action, :failure)
+    @controller.send(:process_action, :test)
   end
 
   it "should call render with the correct view and correct HTTP status" do
