@@ -66,17 +66,11 @@ describe 'HTTPStatus#http_status_exception' do
   end
 
   it "should call :http_status_exception when an exception is raised when handling the action" do
-    
-    ### TODO: fix this spec
-    
-    # Rescue from is now not handled by ActionController itself anymore, but by a piece of middleware
-    # called ActionDispatch::Rescue
-    # https://github.com/rails/rails/blob/master/actionpack/lib/action_dispatch/middleware/rescue.rb
-    
     exception = HTTPStatus::Base.new('test')
-    @controller.stub(:process_action, :test).and_raise(exception)
+    @controller.stub(:failure).and_raise(exception)
+    @controller.stub(:request).and_return(ActionDispatch::TestRequest.new)
     @controller.should_receive(:http_status_exception).with(exception)
-    @controller.send(:process_action, :test)
+    @controller.send(:process_action, :failure)
   end
 
   it "should call render with the correct view and correct HTTP status" do
