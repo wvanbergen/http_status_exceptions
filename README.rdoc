@@ -4,9 +4,11 @@ This simple plugin will register exception classes for all HTTP status. These ex
 which a response will be send back to the client with the desired HTTP status, possible with some other content.
 
 You can use this plugin to access control mechanisms. You can simply raise a <tt>HTTPStatus::Forbidden</tt> if a user is not allowed to
-perform a certain action. A nice looking error page will be the result. See the example below:
+perform a certain action. A nice looking error page will be the result. See the project wiki 
+(https://github.com/wvanbergen/http_status_exceptions/wiki) for additional documentation.
 
-See the project wiki (http://github.com/wvanbergen/http_status_exceptions/wiki) for additional documentation.
+This plugin only works with Rails 3. Version 0.2.1 of this plugin is compatible with Rails 2. The code for this version can be found in
+the rails2 branch: https://github.com/wvanbergen/http_status_exceptions/tree/rails2.
 
 == Installation
 
