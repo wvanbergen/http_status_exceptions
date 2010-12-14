@@ -3,25 +3,19 @@
 This simple plugin will register exception classes for all HTTP status. These exceptions can then be raised from your controllers, after
 which a response will be send back to the client with the desired HTTP status, possible with some other content.
 
-You can use this plugin to access control mechanisms. You can simply raise a HTTPStatus::Forbidden if a user is not allowed to
+You can use this plugin to access control mechanisms. You can simply raise a <tt>HTTPStatus::Forbidden</tt> if a user is not allowed to
 perform a certain action. A nice looking error page will be the result. See the example below:
 
-See the project wiki (http://wiki.github.com/wvanbergen/http_status_exceptions) for additional documentation.
+See the project wiki (http://github.com/wvanbergen/http_status_exceptions/wiki) for additional documentation.
 
 == Installation
 
-Installation is simple. Simply add the gem to the configuration in your <tt>environment.rb</tt> or <tt>Gemfile</tt>:
-
-  # environment.rb
-  Rails::Initializer.run do |config|
-    ...
-    config.gem 'http_status_exceptions'
-  end
+Installation is simple. Simply add the gem to the configuration in your <tt>Gemfile</tt>:
 
   # Gemfile
   gem 'http_status_exceptions'
 
-Run <tt>rake gems:install</tt> to install the gem if needed.
+Run <tt>bundle install</tt> to make sure to have the gem included in your bundle.
 
 == Configuration
 
