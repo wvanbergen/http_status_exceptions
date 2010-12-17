@@ -348,13 +348,17 @@ module GithubGem
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       response = http.request(Net::HTTP::Get.new(uri.path))
 
-      open(__FILE__, "w") { |file| file.write(response.body) }
-      relative_file = File.expand_path(__FILE__).sub(%r[^#{@root_dir}/], '')
-      if `#{git} ls-files -m #{relative_file}`.split("\n").any?
-        sh git, 'add', relative_file
-        sh git, 'commit', '-m', "Updated to latest gem release management tasks."
+      if Net::HTTPSuccess === response
+        open(__FILE__, "w") { |file| file.write(response.body) }
+        relative_file = File.expand_path(__FILE__).sub(%r[^#{@root_dir}/], '')
+        if `#{git} ls-files -m #{relative_file}`.split("\n").any?
+          sh git, 'add', relative_file
+          sh git, 'commit', '-m', "Updated to latest gem release management tasks."
+        else
+          puts "Release managament tasks already are at the latest version."
+        end
       else
-        puts "Release managament tasks already are at the latest version."
+        raise "Download failed with HTTP status #{response.code}!"
       end
     end
   end
