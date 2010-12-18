@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    http_status_exceptions (0.2.1)
+    http_status_exceptions (0.3.0)
       actionpack (>= 3)
       rack (>= 1.2.1)
 

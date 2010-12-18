@@ -22,7 +22,7 @@ module HTTPStatus
 
   # The current gem release version. Do not set this value by hand, it will
   # be done automatically by them gem release script.
-  VERSION = "0.2.1"
+  VERSION = "0.3.0"
 
   # The Base HTTP status exception class is used as superclass for every
   # exception class that is constructed. It implements some shared
