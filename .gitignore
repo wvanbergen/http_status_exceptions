@@ -5,3 +5,4 @@ http_status_exceptions-*.gem
 /coverage
 .DS_Store
 /.bundle
+Gemfile.lock

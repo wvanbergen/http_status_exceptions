@@ -1,7 +1,5 @@
 require 'rubygems'
-require 'bundler'
-
-Bundler.setup
+require 'bundler/setup'
 
 require 'rspec'
 require 'http_status_exceptions'
