@@ -12,6 +12,11 @@ describe HTTPStatus::Base, 'class inheritance' do
     HTTPStatus.send :remove_const, 'TestingStatus'
   end
 
+  it "should not clobber ActionController::Base namespace" do
+    HTTPStatus::OK
+    expect { ActionController::Base::OK }.to raise_error(NameError)
+  end
+
   it "should set the status symbol based on the class name" do
     @status_exception_class.status.should == :testing_status
   end
