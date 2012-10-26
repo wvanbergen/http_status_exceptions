@@ -68,6 +68,7 @@ describe 'HTTPStatus#http_status_exception' do
   it "should call :http_status_exception when an exception is raised when handling the action" do
     exception = HTTPStatus::Base.new('test')
     @controller.stub(:request).and_return(ActionDispatch::TestRequest.new)
+    @controller.stub(:response).and_return(ActionDispatch::TestResponse.new)
     @controller.stub(:test).and_raise(exception)
     @controller.should_receive(:http_status_exception).with(exception)
     @controller.send(:process_action, :test)
@@ -92,7 +93,7 @@ describe 'HTTPStatus#http_status_exception' do
   end
 
   it "should call head with the correct status code if render cannot found a template" do
-    @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.html.erb', {}, false))
+    @controller.stub!(:render).and_raise(ActionView::MissingTemplate.new([], 'template.html.erb', [], false, nil))
     @controller.should_receive(:head).with(:internal_server_error)
     @controller.http_status_exception(HTTPStatus::Base.new('test'))
   end
