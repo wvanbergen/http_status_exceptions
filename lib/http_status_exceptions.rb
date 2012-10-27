@@ -95,15 +95,6 @@ module HTTPStatus
     end
   end
 
-  # This function will install a rescue_from handler for HTTPStatus::Base
-  # exceptions in the class in which this module is included.
-  #
-  # <tt>base</tt>:: The class in which the module is included. Should be
-  # <tt>ActionController::Base</tt> during the initialization of the gem.
-  def self.included(base)
-    base.send(:rescue_from, HTTPStatus::Base, :with => :http_status_exception)
-  end
-
   # Generates a <tt>HTTPStatus::Base</tt> subclass on demand based on the
   # constant name. The constant name should correspond to one of the status
   # symbols defined in <tt>ActionController::StatusCodes</tt>. The function
@@ -126,24 +117,35 @@ module HTTPStatus
     return const_get(const)
   end
 
-  # The default handler for raised HTTP status exceptions. It will render a
-  # template if available, or respond with an empty response with the HTTP
-  # status corresponding to the exception.
-  #
-  # You can override this method in your <tt>ApplicationController</tt> to
-  # handle the exceptions yourself.
-  #
-  # <tt>exception</tt>:: The HTTP status exception to handle.
-  def http_status_exception(exception)
-    @exception = exception
-    render_options = {:template => exception.template, :status => exception.status}
-    render_options[:layout] = exception.template_layout if exception.template_layout
-    render(render_options)
-  rescue ActionView::MissingTemplate
-    head(exception.status)
+  module ControllerAddition
+    # This function will install a rescue_from handler for HTTPStatus::Base
+    # exceptions in the class in which this module is included.
+    #
+    # <tt>base</tt>:: The class in which the module is included. Should be
+    # <tt>ActionController::Base</tt> during the initialization of the gem.
+    def self.included(base)
+      base.send(:rescue_from, HTTPStatus::Base, :with => :http_status_exception)
+    end
+
+    # The default handler for raised HTTP status exceptions. It will render a
+    # template if available, or respond with an empty response with the HTTP
+    # status corresponding to the exception.
+    #
+    # You can override this method in your <tt>ApplicationController</tt> to
+    # handle the exceptions yourself.
+    #
+    # <tt>exception</tt>:: The HTTP status exception to handle.
+    def http_status_exception(exception)
+      @exception = exception
+      render_options = {:template => exception.template, :status => exception.status}
+      render_options[:layout] = exception.template_layout if exception.template_layout
+      render(render_options)
+    rescue ActionView::MissingTemplate
+      head(exception.status)
+    end
   end
 end
 
 # Include the HTTPStatus module into <tt>ActionController::Base</tt> to enable
 # the <tt>http_status_exception</tt> exception handler.
-ActionController::Base.send(:include, HTTPStatus)
+ActionController::Base.send(:include, HTTPStatus::ControllerAddition)
